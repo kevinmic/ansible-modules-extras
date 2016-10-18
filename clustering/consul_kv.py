@@ -84,6 +84,11 @@ options:
             the ModifyIndex of that key.
         required: false
         default: None
+    dc:
+        description:
+          - used to connect to a specific consul datacenter
+        required: false
+        default: None
     flags:
         description:
           - opaque integer value that can be passed when setting a value.
@@ -242,6 +247,7 @@ def remove_value(module):
 
 def get_consul_api(module, token=None):
     return consul.Consul(host=module.params.get('host'),
+                         dc=module.params.get('dc'),
                          port=module.params.get('port'),
                          scheme=module.params.get('scheme'),
                          verify=module.params.get('validate_certs'),
@@ -259,6 +265,7 @@ def main():
         flags=dict(required=False),
         key=dict(required=True),
         host=dict(default='localhost'),
+        dc=dict(required=False),
         scheme=dict(required=False, default='http'),
         validate_certs=dict(required=False, default=True),
         port=dict(default=8500, type='int'),
